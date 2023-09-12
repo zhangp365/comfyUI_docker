@@ -1,0 +1,12 @@
+models
+default_models
+dist
+Llama*
+.DS_Store
+.vscode
+*.whl
+
+__pycache__
+gradio_cached_examples
+
+.pytest_cache

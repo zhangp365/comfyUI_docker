@@ -1,0 +1,28 @@
+version: "1"
+services:
+  llama2-webui-docker:
+    image: zhangp365/llama2-webui:v0.1 # Specify variant as the :tag
+    container_name: llama2-webui
+    environment:
+      - EXTRA_LAUNCH_ARGS="--backend_type gptq" # Custom launch args (e.g., --model MODEL_NAME)
+
+    ports:
+      - 7860:7860  # Default web port
+#      - 5000:5000  # Default API port
+#      - 5005:5005  # Default streaming port
+#      - 5001:5001  # Default OpenAI API extension port
+    volumes:
+       - ./models:/app/models
+     
+    logging:
+      driver:  json-file
+      options:
+        max-file: "3"   # number of files or file count
+        max-size: '10m'
+    deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                device_ids: ['0']
+                capabilities: [gpu]
