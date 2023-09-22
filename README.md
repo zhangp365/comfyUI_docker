@@ -7,7 +7,7 @@ This project dockerises the deployment of [comfyanonymous/ComfyUI](https://githu
 *This project currently supports Linux as the deployment platform. It will also work using WSL2.*
 
 ## command
-docker run --gpus all -t  -p 8188:8188 -e CLI_ARGS="--listen 0.0.0.0" -v /your/path/outputs:/app/output -v /your/path/data:/data -d zhangp365/comfyui:v0.1
+docker run --gpus all -t  -p 8188:8188 -e CLI_ARGS="" -v /your/path/outputs:/app/output -v /your/path/data:/data -d zhangp365/comfyui:v0.1
 
 ## docker hub address
 https://hub.docker.com/repository/docker/zhangp365/comfyui/general 

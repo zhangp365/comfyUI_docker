@@ -40,4 +40,4 @@ ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
 FROM base_ready AS default
 RUN echo "DEFAULT" >> /variant.txt
 ENV CLI_ARGS=""
-CMD python3 /app/main.py ${CLI_ARGS}
+CMD python3 /app/main.py --listen 0.0.0.0 ${CLI_ARGS} 
