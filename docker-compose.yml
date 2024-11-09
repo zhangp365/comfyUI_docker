@@ -1,8 +1,8 @@
 version: "1"
 services:
   llama2-webui-docker:
-    image: zhangp365/llama2-webui:v0.1 # Specify variant as the :tag
-    container_name: llama2-webui
+    image: zhangp365/llama2-webui:latest # Specify variant as the :tag
+    container_name: comfyui_latest
     environment:
       - EXTRA_LAUNCH_ARGS="--backend_type gptq" # Custom launch args (e.g., --model MODEL_NAME)
 
@@ -12,7 +12,9 @@ services:
 #      - 5005:5005  # Default streaming port
 #      - 5001:5001  # Default OpenAI API extension port
     volumes:
-       - ./models:/app/models
+       - ./output:/app/output
+       - ./data:/data
+
      
     logging:
       driver:  json-file

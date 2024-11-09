@@ -1,6 +1,8 @@
-FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime AS env_base
-RUN apt-get update && apt-get install -y   git vim && apt-get clean
-# Instantiate venv and pre-activate
+FROM pytorch/pytorch:2.2.2-cuda11.8-cudnn8-runtime AS env_base
+ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
+
+RUN --mount=type=cache,target=/var/cache/apt \
+apt-get update && apt-get install -y git vim libgl1-mesa-glx libglib2.0-0 python3-dev gcc g++ && apt-get clean
 RUN pip3 install --no-cache-dir --upgrade pip setuptools
 
 
@@ -11,7 +13,13 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI /app
 # Install comfyUI
 COPY requirements.txt /app/requirements.txt
 RUN --mount=type=cache,target=/root/.cache/pip pip3  install --no-cache-dir -r /app/requirements.txt
-RUN pip install --no-cache-dir bitsandbytes==0.41.1
+RUN pip install --no-cache-dir bitsandbytes==0.41.1 torchsde onnxruntime-gpu ninja triton opencv-python spandrel
+RUN pip install --no-cache-dir -v xformers==0.0.26 --index-url https://download.pytorch.org/whl/cu118
+
+RUN cd /app/custom_nodes && git clone https://github.com/twri/sdxl_prompt_styler.git
+RUN cd /app/custom_nodes && git clone  https://github.com/Fannovel16/comfyui_controlnet_aux && cd comfyui_controlnet_aux && pip install --no-cache-dir -r requirements.txt
+RUN cd /app/custom_nodes && git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+RUN cd /app/custom_nodes && git clone https://github.com/zhangp365/ComfyUI-utils-nodes.git
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 ENV LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH"
@@ -32,7 +40,10 @@ RUN echo "$BUILD_DATE" > /build_date.txt
 # Copy and enable all scripts
 COPY ./scripts /scripts
 RUN chmod +x /scripts/*
-RUN cd /app && git pull
+RUN cd /app && git checkout . && git pull
+RUN cd /app/custom_nodes/comfyui_controlnet_aux && git pull
+RUN cd /app/custom_nodes/ComfyUI_IPAdapter_plus && git pull
+RUN ln -s /opt/conda/lib/libnvrtc.so.11.8.89 /opt/conda/lib/python3.10/site-packages/torch/lib/libnvrtc.so
 
 # Run
 ENTRYPOINT ["/scripts/docker-entrypoint.sh"]

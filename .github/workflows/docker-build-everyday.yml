@@ -1,0 +1,62 @@
+name: Build and Push Docker Images Everyday.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 23 * * *'  # Run every day at 11 PM
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        branch: ['master']  # 在此配置需要执行的分支列表
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_USERNAME: zhangp365
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      REPO_NAME: zhangp365
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ matrix.branch }}  # 检出指定分支
+
+      - name: Log in to Docker Hub
+        run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      - name: Set IMAGE_VERSION
+        run: |
+          echo "IMAGE_VERSION=latest" >> $GITHUB_ENV
+          # 如果是周日，添加日期版本
+          if [ $(date +%u) -eq 7 ]; then
+            echo "DATE_VERSION=$(date +'%Y%m%d')" >> $GITHUB_ENV
+            echo "IS_SUNDAY=true" >> $GITHUB_ENV
+          else
+            echo "IS_SUNDAY=false" >> $GITHUB_ENV
+          fi
+
+      - name: Build and Push Docker Images
+        run: |
+          # 构建镜像
+          if [ "$IS_SUNDAY" = "true" ]; then
+            # 周日：构建带日期版本和latest版本
+            docker build -t $REPO_NAME/comfyui:${DATE_VERSION} -t $REPO_NAME/comfyui:latest -f Dockerfile .
+            # 推送两个版本
+            docker push $REPO_NAME/comfyui:${DATE_VERSION}
+            docker push $REPO_NAME/comfyui:latest
+          else
+            # 其他日子：只构建和推送latest版本
+            docker build -t $REPO_NAME/comfyui:latest -f Dockerfile .
+            docker push $REPO_NAME/comfyui:latest
+          fi
+
+      - name: Finish or Confirm Success
+        run: |
+          if [ "$IS_SUNDAY" = "true" ]; then
+            echo "Build and push completed for branch ${{ matrix.branch }}. Created versions: latest and ${DATE_VERSION}"
+          else
+            echo "Build and push completed for branch ${{ matrix.branch }}. Created version: latest"
+          fi
