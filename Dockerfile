@@ -16,6 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/pip pip3  install --no-cache-dir -r /
 RUN pip install --no-cache-dir bitsandbytes==0.41.1 torchsde onnxruntime-gpu ninja triton opencv-python spandrel kornia
 RUN pip install --no-cache-dir -v xformers==0.0.26 --index-url https://download.pytorch.org/whl/cu118
 
+RUN cd /app/custom_nodes && git clone https://github.com/ltdrdata/ComfyUI-Manager.git
 RUN cd /app/custom_nodes && git clone https://github.com/twri/sdxl_prompt_styler.git
 RUN cd /app/custom_nodes && git clone  https://github.com/Fannovel16/comfyui_controlnet_aux && cd comfyui_controlnet_aux && pip install --no-cache-dir -r requirements.txt
 RUN cd /app/custom_nodes && git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git 
