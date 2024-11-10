@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 23 * * *'  # Run every day at 11 PM
+  push:
+    branches: 
+      - 'master'
 
 jobs:
   build:
