@@ -45,7 +45,7 @@ RUN cd /app && git checkout . && git pull
 RUN cd /app/custom_nodes/comfyui_controlnet_aux && git pull
 RUN cd /app/custom_nodes/ComfyUI_IPAdapter_plus && git pull
 RUN ln -s /opt/conda/lib/libnvrtc.so.11.8.89 /opt/conda/lib/python3.10/site-packages/torch/lib/libnvrtc.so
-
+RUN sed -i 's/if int((xformers\.__version__).split(".")\[2\]) >= 28:/if int((xformers.__version__).split(".")\[2\].split("+"\)\[0\]) >= 28:/g' /app/comfy/ldm/pixart/blocks.py
 # Run
 ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
 
