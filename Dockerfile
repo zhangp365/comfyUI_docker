@@ -11,7 +11,6 @@ FROM env_base AS base
 RUN git clone https://github.com/comfyanonymous/ComfyUI /app
 
 # Install comfyUI
-COPY requirements.txt /app/requirements.txt
 RUN --mount=type=cache,target=/root/.cache/pip pip3  install --no-cache-dir -r /app/requirements.txt
 RUN pip install --no-cache-dir bitsandbytes==0.41.1 torchsde onnxruntime-gpu ninja triton opencv-python spandrel kornia
 RUN pip install --no-cache-dir -v xformers==0.0.26 --index-url https://download.pytorch.org/whl/cu118
