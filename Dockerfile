@@ -19,7 +19,7 @@ RUN cd /app/custom_nodes && git clone https://github.com/ltdrdata/ComfyUI-Manage
 RUN cd /app/custom_nodes && git clone https://github.com/twri/sdxl_prompt_styler.git
 RUN cd /app/custom_nodes && git clone  https://github.com/Fannovel16/comfyui_controlnet_aux && cd comfyui_controlnet_aux && pip install --no-cache-dir -r requirements.txt
 RUN cd /app/custom_nodes && git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git 
-RUN cd /app/custom_nodes && git clone https://github.com/zhangp365/ComfyUI-utils-nodes.git
+RUN cd /app/custom_nodes && git clone https://github.com/zhangp365/ComfyUI-utils-nodes.git && pip instll --no-cache-dir google-generativeai
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 ENV LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH"
