@@ -39,6 +39,7 @@ RUN echo "$BUILD_DATE" > /build_date.txt
 
 # Copy and enable all scripts
 COPY ./scripts /scripts
+RUN sed -i 's/\r$//' /scripts/docker-entrypoint.sh
 RUN chmod +x /scripts/*
 RUN cd /app && git checkout . && git pull
 RUN cd /app/custom_nodes/comfyui_controlnet_aux && git pull
