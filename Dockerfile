@@ -3,7 +3,7 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN --mount=type=cache,target=/var/cache/apt \
 apt-get update && apt-get install -y git vim libgl1-mesa-glx libglib2.0-0 python3-dev gcc g++ && apt-get clean
-RUN pip3 install --no-cache-dir --upgrade pip setuptools
+RUN pip3 install --no-cache-dir --upgrade pip setuptools==76.1.0
 
 
 FROM env_base AS base 
