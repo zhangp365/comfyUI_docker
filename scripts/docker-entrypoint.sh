@@ -17,6 +17,9 @@ MOUNTS["${ROOT}/models/unet"]="/data/unet"
 MOUNTS["${ROOT}/models/upscale_models"]="/data/upscale_models"
 MOUNTS["${ROOT}/models/vae"]="/data/vae"
 MOUNTS["${ROOT}/models/vae_approx"]="/data/vae_approx"
+MOUNTS["${ROOT}/models/diffusion_models"]="/data/diffusion_models"
+MOUNTS["${ROOT}/models/photomaker"]="/data/photomaker"
+MOUNTS["${ROOT}/models/text_encoders"]="/data/text_encoders"
 
 for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
