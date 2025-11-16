@@ -18,6 +18,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI /app
 RUN --mount=type=cache,target=/root/.cache/pip pip3  install --no-cache-dir -r /app/requirements.txt
 RUN pip install --no-cache-dir bitsandbytes==0.41.1 onnxruntime-gpu==1.19.2 ninja triton opencv-python spandrel kornia
 RUN pip install --no-cache-dir -v xformers==0.0.31 --index-url https://download.pytorch.org/whl/cu118
+RUN pip install --no-cache-dir "flash-attn==2.8.2 sageattention==1.0.6"
 
 RUN cd /app/custom_nodes && git clone https://github.com/ltdrdata/ComfyUI-Manager.git
 RUN cd /app/custom_nodes && git clone https://github.com/twri/sdxl_prompt_styler.git
